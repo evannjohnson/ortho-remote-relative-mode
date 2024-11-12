@@ -1,16 +1,16 @@
-# macOS volume control through Teenage Engineering Ortho Remote
+This script sets the Teenage Engineering ortho remote into "relative" mode. By the default mode is "absolute" mode, where it will not send any further messages if it is turned past the limits of "0" or "127". In "relative" mode, it sends "1" when turned clockwise and "127" when turned counter-clockwise, allowing you to use it as an endless knob, or set it to have arbitrary resolution for some parameter.
 
-Adjusts volume in fine 1/64 increments by emulating alt + shift + volume up / down. Much smoother than setting the volume through AppleScript, or through the default 1/16 increment behaviour. Also allows play / pause by clicking.
+forked from https://github.com/simondemeule/orthocontrol/tree/master
 
 # How to use
+- Install by running `sh setup.sh` (creates venv and installs packages into it)
 
-Install by running `sh setup.sh`. Activate the environment with `source env/bin/activate`. Run with `python3 orthocontrol.py` or `sh run.sh` with your arguments of choice. You might want to run this on system startup if you want this to work whenever your Ortho Remote is connected. 
+- Activate the environment with `source .venv/bin/activate`. Run with `python enable-relative-mode.py` with arguments
+    - ex. `python set-relative-mode.py --midi-name="ortho remote Bluetooth" --relative` to enable relative mode
 
 Here are the arguments:
 - `--midi-name` provides the name of the MIDI port of the Ortho Remote. This is required.
-- `--midi-restart` will cause a restart of the MIDI server when connection is unsuccessful. This might be necessary to allow the Ortho Remote to reconnect. This can mess with other MIDI devices and MIDI applications.
-- `--midi-restart-interval` sets the time between restarts in seconds.
-- `--midi-sysex` enables a MIDI SYSEX message that sets the Ortho Remote in relative position mode. This prevents reaching a dead zone at the extremes of the CC ranges.
-- `--midi-notifications` enables notifications sent through osascript that provide information on the connection status. This can be useful to know when Ortho Remote goes to sleep so you can nudge it back awake, or kill the script if you are away from Ortho Remote.
+    - you probably want `--midi-name="ortho remote Bluetooth"`, but if you get this wrong, you could potentially send sysex messages to the wrong midi device, which likely wouldn't do anything but could result in misconfiguration or data loss on the device you send it to.
+- `--relative` enables relative mode
+- `--absolute` enables absolute mode
 
-Feel free to strip out the Ortho Remote specific logic and integrate this with whatever encoder controller you have!
